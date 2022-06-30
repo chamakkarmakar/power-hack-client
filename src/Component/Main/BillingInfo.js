@@ -1,10 +1,10 @@
 
-const BillingInfo = ({bill}) => {
+const BillingInfo = ({bill,index}) => {
     return (
         <tr className="border-b border-gray-200 bg-gray-50 hover:bg-gray-100">
             <td className="py-3 px-6 text-center border-r">
                 <div className="flex items-center">
-                    <span className="font-medium">PQR1120</span>
+                    <span className="font-medium">{index+1}</span>
                 </div>
             </td>
             <td className="py-3 px-6 text-center border-r">

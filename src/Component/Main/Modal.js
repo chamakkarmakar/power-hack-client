@@ -1,12 +1,27 @@
 
-const Modal = ({showModal,setShowModal}) => {
+const Modal = ({setShowModal}) => {
     const handleSubmit = event => {
         event.preventDefault();
         const name=event.target.name.value;
         const email=event.target.email.value;
         const phone=event.target.phone.value;
         const amount = event.target.amount.value;
-        console.log(name, email, phone, amount);
+        const add = { name, email, phone, amount };
+        // console.log(add);
+
+        const url=`http://localhost:5000/api/add-billing`;
+        fetch(url,{
+            method: 'POST',
+            headers:{
+                'content-type':'application/json'
+            },
+            body:JSON.stringify(add)
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            console.log(data);
+        })
+
         event.target.reset();
     }
     return (

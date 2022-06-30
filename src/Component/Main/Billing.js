@@ -8,7 +8,7 @@ const Billing = () => {
         fetch('http://localhost:5000/api/billing-list')
             .then(res => res.json())
             .then(data => setBills(data))
-    }, [])
+    }, [setBills])
     const [showModal, setShowModal] = useState(false);
     const handleAdd = () => {
         setShowModal(true);
@@ -45,9 +45,11 @@ const Billing = () => {
                             </thead>
                             <tbody className="text-gray-600 text-sm font-light">
                                 {
-                                    bills.map(bill =>
+                                    bills.map((bill, index) =>
                                         <BillingInfo
+                                            key={index}
                                             bill={bill}
+                                            index={index}
                                         ></BillingInfo>)
                                 }
 
