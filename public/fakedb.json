@@ -1,0 +1,20 @@
+[
+    {
+        "name" : "John ",
+        "email" : "jhon@gmail.com",
+        "phone" : "852369741",
+        "amount" : "789"
+    },
+    {
+        "name" : "Breden ",
+        "email" : "breden@gmail.com",
+        "phone" : "852859741",
+        "amount" : "759"
+    },
+    {
+        "name" : "Joe Biden ",
+        "email" : "Jbidden@maga.us",
+        "phone" : "01410778980",
+        "amount" : "421"
+    }
+]

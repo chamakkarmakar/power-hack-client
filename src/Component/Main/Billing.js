@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import BillingInfo from "./BillingInfo";
 import Modal from "./Modal";
 
 const Billing = () => {
+    const [bills, setBills] = useState([]);
+    useEffect(() => {
+        fetch('http://localhost:5000/api/billing-list')
+            .then(res => res.json())
+            .then(data => setBills(data))
+    }, [])
     const [showModal, setShowModal] = useState(false);
     const handleAdd = () => {
         setShowModal(true);
     }
-   
+
     return (
         <div className="overflow-x-auto">
             <div className="min-w-screen mt-10 bg-gray-100 flex items-center justify-center font-sans overflow-hidden">
@@ -37,38 +44,13 @@ const Billing = () => {
                                 </tr>
                             </thead>
                             <tbody className="text-gray-600 text-sm font-light">
+                                {
+                                    bills.map(bill =>
+                                        <BillingInfo
+                                            bill={bill}
+                                        ></BillingInfo>)
+                                }
 
-                                <tr className="border-b border-gray-200 bg-gray-50 hover:bg-gray-100">
-                                    <td className="py-3 px-6 text-center border-r">
-                                        <div className="flex items-center">
-                                            <span className="font-medium">PQR1120</span>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 px-6 text-center border-r">
-                                        <div className="flex items-center">
-                                            <span className="font-medium">Joe Biden</span>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 px-6 text-center border-r">
-                                        <div className="flex items-center justify-center">
-                                            <span className="font-medium">Jbidden@maga.us</span>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 px-6 text-center border-r">
-                                        <div className="flex items-center justify-center">
-                                            <span className="font-medium">+1410778980</span>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 px-6 text-center border-r">
-                                        <div className="flex items-center justify-center">
-                                            <span className="font-medium">$412</span>
-                                        </div>
-                                    </td>
-                                    <td className="p-3 px-5 flex justify-end border-r">
-                                        <button type="button" className="mr-3 text-sm bg-violet-500 hover:bg-violet-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Edit</button>
-                                        <button type="button" className="text-sm bg-rose-600 hover:bg-rose-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Delete</button>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -80,9 +62,9 @@ const Billing = () => {
                     <Modal
                         showModal={showModal}
                         setShowModal={setShowModal}></Modal>
-                        : null
-                }
-            </div >
+                    : null
+            }
+        </div >
     );
 };
 
