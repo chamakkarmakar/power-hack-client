@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
-import Modal from "./Modal";
+import BillingUpdate from "./BillingUpdate";
+import Modal from './Modal';
 
 const Billing = () => {
+    const [addModal, setAddModal] = useState(false);
+    const [updateModal, setUpdateModal] = useState(false);
     const [bills, setBills] = useState([]);
-
     useEffect(() => {
         fetch('http://localhost:5000/api/billing-list')
             .then(res => res.json())
             .then(data => setBills(data))
     }, [setBills])
+   
 
-    const [showModal, setShowModal] = useState(false);
     const handleAdd = () => {
-        setShowModal(true);
+        setAddModal(true);
     }
 
     const handleDelete = id => {
@@ -31,6 +33,12 @@ const Billing = () => {
         }
     }
 
+    const handleEdit = id=> {
+        setUpdateModal(true);
+        <BillingUpdate id={id}></BillingUpdate>
+
+    }
+
     return (
         <div className="overflow-x-auto">
             <div className="min-w-screen mt-10 bg-gray-100 flex items-center justify-center font-sans overflow-hidden">
@@ -43,10 +51,20 @@ const Billing = () => {
                             <div>
                                 <label htmlFor="add-modal"
                                     onClick={() => handleAdd()}
-                                    className="focus:ring-2 focus:ring-offset-2 text-white focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
+                                    className="focus:ring-2 focus:ring-offset-2 text-white cursor-pointer focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
                                     Add New Bill
                                 </label>
                             </div>
+                            {
+                                addModal ?
+                                    <Modal setAddModal={setAddModal}></Modal>
+                                    : null
+                            }
+                            {
+                                updateModal ? 
+                                    <BillingUpdate updateModal={updateModal} setUpdateModal={setUpdateModal}></BillingUpdate> : null
+                            }
+
 
                         </div>
                         <table className="min-w-max w-full table-auto border-collapse">
@@ -62,38 +80,40 @@ const Billing = () => {
                             </thead>
                             <tbody className="text-gray-600 text-sm font-light">
                                 {
-                                    bills.map((bill, index) =>
-                                    <tr className="border-b border-gray-200 bg-gray-50 hover:bg-gray-100">
-                                    <td className="py-3 px-6 text-center border-r">
-                                        <div className="flex items-center">
-                                            <span className="font-medium">{index+1}</span>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 px-6 text-center border-r">
-                                        <div className="flex items-center">
-                                            <span className="font-medium">{bill.name }</span>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 px-6 text-center border-r">
-                                        <div className="flex items-center justify-center">
-                                            <span className="font-medium">{bill.email}</span>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 px-6 text-center border-r">
-                                        <div className="flex items-center justify-center">
-                                            <span className="font-medium">{bill.phone}</span>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 px-6 text-center border-r">
-                                        <div className="flex items-center justify-center">
-                                            <span className="font-medium">${bill.amount}</span>
-                                        </div>
-                                    </td>
-                                    <td className="p-3 px-5 flex justify-end border-r">
-                                        <button type="button" className="mr-3 text-sm bg-violet-500 hover:bg-violet-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Edit</button>
-                                        <button type="button" onClick={() => handleDelete(bill._id)} className="text-sm bg-rose-600 hover:bg-rose-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Delete</button>
-                                    </td>
-                                </tr>)
+                                    bills.map(bill =>
+                                        <tr key={bill._id} className="border-b border-gray-200 bg-gray-50 hover:bg-gray-100">
+                                            <td className="py-3 px-6 text-center border-r">
+                                                <div className="flex items-center">
+                                                    <span className="font-medium">{bill._id}</span>
+                                                </div>
+                                            </td>
+                                            <td className="py-3 px-6 text-center border-r">
+                                                <div className="flex items-center">
+                                                    <span className="font-medium">{bill.name}</span>
+                                                </div>
+                                            </td>
+                                            <td className="py-3 px-6 text-center border-r">
+                                                <div className="flex items-center justify-center">
+                                                    <span className="font-medium">{bill.email}</span>
+                                                </div>
+                                            </td>
+                                            <td className="py-3 px-6 text-center border-r">
+                                                <div className="flex items-center justify-center">
+                                                    <span className="font-medium">{bill.phone}</span>
+                                                </div>
+                                            </td>
+                                            <td className="py-3 px-6 text-center border-r">
+                                                <div className="flex items-center justify-center">
+                                                    <span className="font-medium">${bill.amount}</span>
+                                                </div>
+                                            </td>
+                                            <td className="p-3 px-5 flex justify-end border-r">
+
+                                                <button type="button" onClick={() => handleEdit(bill._id)} className="mr-3 text-sm bg-violet-500 hover:bg-violet-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Edit</button>
+
+                                                <button type="button" onClick={() => handleDelete(bill._id)} className="text-sm bg-rose-600 hover:bg-rose-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Delete</button>
+                                            </td>
+                                        </tr>)
                                 }
 
                             </tbody>
@@ -102,13 +122,8 @@ const Billing = () => {
                 </div>
 
             </div>
-            {
-                showModal ?
-                    <Modal
-                        showModal={showModal}
-                        setShowModal={setShowModal}></Modal>
-                    : null
-            }
+           
+            
         </div >
     );
 };

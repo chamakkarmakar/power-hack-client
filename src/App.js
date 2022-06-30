@@ -4,6 +4,9 @@ function App() {
   return (
     <div className="App">
      <Home></Home>
+      {/* <Routes>
+        <Route path='/update-billing/:id' element={<BillingUpdate />}></Route>
+     </Routes> */}
     </div>
   );
 }

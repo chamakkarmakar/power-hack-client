@@ -9,7 +9,7 @@ const Home = () => {
                     <span className="font-semibold text-xl tracking-tight">BILL REGISTRY</span>
                 </div>
                 <div className="lg:items-center">
-                    <span className="inline-block text-sm px-4 py-2 leading-none border rounded text-slate-800 border-slate-800">Paid Total: $4120</span>
+                    <span className="inline-block text-sm px-4 py-2 leading-none border rounded text-slate-800 border-slate-800">Paid Total: $</span>
                 </div>
             </nav>
             <Billing></Billing>
