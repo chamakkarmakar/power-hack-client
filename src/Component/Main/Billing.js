@@ -1,17 +1,34 @@
 import { useEffect, useState } from "react";
-import BillingInfo from "./BillingInfo";
 import Modal from "./Modal";
 
 const Billing = () => {
     const [bills, setBills] = useState([]);
+
     useEffect(() => {
         fetch('http://localhost:5000/api/billing-list')
             .then(res => res.json())
             .then(data => setBills(data))
     }, [setBills])
+
     const [showModal, setShowModal] = useState(false);
     const handleAdd = () => {
         setShowModal(true);
+    }
+
+    const handleDelete = id => {
+        const proceed = window.confirm('Are you sure to delete?');
+        if (proceed) {
+            const url = `http://localhost:5000/api/delete-billing/${id}`;
+            fetch(url, {
+                method: 'DELETE'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const remaining = bills.filter(bill => bill._id !== id);
+                    setBills(remaining);
+                })
+        }
     }
 
     return (
@@ -46,11 +63,37 @@ const Billing = () => {
                             <tbody className="text-gray-600 text-sm font-light">
                                 {
                                     bills.map((bill, index) =>
-                                        <BillingInfo
-                                            key={index}
-                                            bill={bill}
-                                            index={index}
-                                        ></BillingInfo>)
+                                    <tr className="border-b border-gray-200 bg-gray-50 hover:bg-gray-100">
+                                    <td className="py-3 px-6 text-center border-r">
+                                        <div className="flex items-center">
+                                            <span className="font-medium">{index+1}</span>
+                                        </div>
+                                    </td>
+                                    <td className="py-3 px-6 text-center border-r">
+                                        <div className="flex items-center">
+                                            <span className="font-medium">{bill.name }</span>
+                                        </div>
+                                    </td>
+                                    <td className="py-3 px-6 text-center border-r">
+                                        <div className="flex items-center justify-center">
+                                            <span className="font-medium">{bill.email}</span>
+                                        </div>
+                                    </td>
+                                    <td className="py-3 px-6 text-center border-r">
+                                        <div className="flex items-center justify-center">
+                                            <span className="font-medium">{bill.phone}</span>
+                                        </div>
+                                    </td>
+                                    <td className="py-3 px-6 text-center border-r">
+                                        <div className="flex items-center justify-center">
+                                            <span className="font-medium">${bill.amount}</span>
+                                        </div>
+                                    </td>
+                                    <td className="p-3 px-5 flex justify-end border-r">
+                                        <button type="button" className="mr-3 text-sm bg-violet-500 hover:bg-violet-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Edit</button>
+                                        <button type="button" onClick={() => handleDelete(bill._id)} className="text-sm bg-rose-600 hover:bg-rose-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Delete</button>
+                                    </td>
+                                </tr>)
                                 }
 
                             </tbody>
