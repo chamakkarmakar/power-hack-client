@@ -8,7 +8,7 @@ const Billing = () => {
     const [updateModal, setUpdateModal] = useState(false);
     const [bills, setBills] = useState([]);
     useEffect(() => {
-        fetch('http://localhost:5000/api/billing-list')
+        fetch('https://fathomless-taiga-90401.herokuapp.com/api/billing-list')
             .then(res => res.json())
             .then(data => setBills(data))
     }, [setBills])
@@ -21,7 +21,7 @@ const Billing = () => {
     const handleDelete = id => {
         const proceed = window.confirm('Are you sure to delete?');
         if (proceed) {
-            const url = `http://localhost:5000/api/delete-billing/${id}`;
+            const url = `https://fathomless-taiga-90401.herokuapp.com/api/delete-billing/${id}`;
             fetch(url, {
                 method: 'DELETE'
             })

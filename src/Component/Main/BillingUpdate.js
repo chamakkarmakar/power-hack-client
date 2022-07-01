@@ -9,7 +9,7 @@ console.log(id);
         const amount = event.target.amount.value;
         const update = { name, email, phone, amount };
         if (updateModal) {
-            const url = `http://localhost:5000/api/update-billing/${id}`;
+            const url = `https://fathomless-taiga-90401.herokuapp.com/api/update-billing/${id}`;
             fetch(url, {
                 method: 'POST',
                 headers: {

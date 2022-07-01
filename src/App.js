@@ -1,12 +1,11 @@
 import './App.css';
 import Home from './Component/Home/Home';
+import Pagination from './Component/Main/Pagination';
 function App() {
   return (
     <div className="App">
      <Home></Home>
-      {/* <Routes>
-        <Route path='/update-billing/:id' element={<BillingUpdate />}></Route>
-     </Routes> */}
+      <Pagination></Pagination>
     </div>
   );
 }

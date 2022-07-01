@@ -9,7 +9,7 @@ const Modal = ({ setAddModal }) => {
         const add = { name, email, phone, amount };
         // console.log(add);
 
-        const url = `http://localhost:5000/api/add-billing`;
+        const url = `https://fathomless-taiga-90401.herokuapp.com/api/add-billing`;
         fetch(url, {
             method: 'POST',
             headers: {
