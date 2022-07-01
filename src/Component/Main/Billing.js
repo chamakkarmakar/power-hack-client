@@ -3,6 +3,7 @@ import BillingUpdate from "./BillingUpdate";
 import Modal from './Modal';
 
 const Billing = () => {
+    const [search, setSearch] = useState('');
     const [addModal, setAddModal] = useState(false);
     const [updateModal, setUpdateModal] = useState(false);
     const [bills, setBills] = useState([]);
@@ -36,8 +37,19 @@ const Billing = () => {
     const handleEdit = id=> {
         setUpdateModal(true);
         <BillingUpdate id={id}></BillingUpdate>
-
     }
+
+    const handleSearch = (event) => {
+        const keyword = event.target.value;
+        if (keyword !== '') {
+            const result = bills.filter(user => {
+                return user.search.toLowerCase().startsWith(keyword.toLowerCase())
+            });
+            setBills(result)
+        }
+    };
+    
+
 
     return (
         <div className="overflow-x-auto">
@@ -46,7 +58,12 @@ const Billing = () => {
                     <div className="bg-stone-100 shadow-md border-2">
                         <div className="sm:flex py-3 mx-2">
                             <div className="flex-auto">
-                                <input type="text" name="name" placeholder="Search User" className="w-11/12 py-2 border-b-2 border-blue-600 outline-none bg-inherit" />
+                                <input
+                                    type="text"
+                                    placeholder="Search User"
+                                    value={search}
+                                    onChange={handleSearch}
+                                    className="w-11/12 py-2 border-b-2 border-blue-600 outline-none bg-inherit" />
                             </div>
                             <div>
                                 <label htmlFor="add-modal"
@@ -64,8 +81,6 @@ const Billing = () => {
                                 updateModal ? 
                                     <BillingUpdate updateModal={updateModal} setUpdateModal={setUpdateModal}></BillingUpdate> : null
                             }
-
-
                         </div>
                         <table className="min-w-max w-full table-auto border-collapse">
                             <thead>
